@@ -58,8 +58,8 @@ commands:
           else TAG=$CIRCLE_TAG
           fi
           PAGES=coq-ext-lib/$TAG
-          if [ -z "$CIRCLE_PULL_REQUESTS" ] && [ $CIRCLE_PROJECT_USERNAME == coq-community ]
-          then git clone -b gh-pages --depth 1 git@github.com:coq-community/coq-ext-lib.git
+          if [ -z "$CIRCLE_PULL_REQUESTS" ] && [ $CIRCLE_PROJECT_USERNAME == liyishuai ]
+          then git clone -b gh-pages --depth 1 git@github.com:liyishuai/coq-ext-lib.git
                rm -rf $PAGES/*
                mkdir -p $PAGES
                cp -LRf html/* $PAGES
