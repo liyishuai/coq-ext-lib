@@ -6,7 +6,7 @@ jobs:
       coq:
         type: string
     docker:
-    - image: coqorg/coq:<<parameters.coq>>
+    - image: <<parameters.coq>>
     resource_class: medium
     environment:
       OPAMJOBS: 2
@@ -16,15 +16,11 @@ jobs:
     steps:
     - checkout
     - run:
-        name: Pull submodules
-        command: git submodule update --init
-    - run:
         name: Configure environment
         command: echo . ~/.profile >> $BASH_ENV
     - run:
         name: Install dependencies
         command: |
-          opam repo -a --set-default add coq-extra-dev https://coq.inria.fr/opam/extra-dev
           opam update
           opam install --deps-only .
     - run:
@@ -33,13 +29,6 @@ jobs:
     - run:
         name: Build, test, and install package
         command: opam install -t .
-    - run:
-        name: Generate Coqdoc
-        command: |
-          make -j`nproc` html
-          tar cfz coqdoc.tgz html
-    - store_artifacts:
-        path: coqdoc.tgz
     - run:
         name: Test dependants
         command: |
@@ -58,16 +47,19 @@ workflows:
     jobs:
     - build:
         name: "Coq 8.8"
-        coq: "8.8"
+        coq: "coqorg/coq:8.8"
     - build:
         name: "Coq 8.9"
-        coq: "8.9"
+        coq: "coqorg/coq:8.9"
     - build:
         name: "Coq 8.10"
-        coq: "8.10"
+        coq: "coqorg/coq:8.10"
     - build:
         name: "Coq 8.11"
-        coq: "8.11"
+        coq: "coqorg/coq:8.11"
     - build:
         name: "Coq dev"
-        coq: "dev"
+        coq: "coqorg/coq:dev"
+    - build:
+        name: "Coq 1.11.0-coq-8.11 provided by mathcomp/mathcomp"
+        coq: "mathcomp/mathcomp:1.11.0-coq-8.11"
